@@ -36,7 +36,7 @@ class Simulator(DDS):
             self.output.append(item)
 
 if __name__ == "__main__":
-    s1 = Simulator(1.0, 110)
+    s1 = Simulator(magnitude = 1.0, frequency = 110)
     s1.run(0.003)
     s1.frequency = 500
     s1.run(0.003)
