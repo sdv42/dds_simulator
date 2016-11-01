@@ -20,6 +20,3 @@ SAMPLE_dT   = int(ONE   >> 18)
 
 def FIX_POINT_MUL(a, b):
     return (a * b) >> FIX_FP_SIZE # NOTE: The fix point multiplication shall be adapted to the choosen platform
-
-def FIX_POINT_DIV(a, b):
-    return int(a / b)

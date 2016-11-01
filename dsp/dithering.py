@@ -12,5 +12,4 @@ class Dither(object):
 
     def apply(self, value):
         noise = self._spin_twister(value & FIX_FP_REST_MASK)
-        #print(value>>FIX_FP_REST_SIZE, value & FIX_FP_REST_MASK, noise)
         return (value >> FIX_FP_REST_SIZE) + noise

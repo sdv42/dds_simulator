@@ -16,15 +16,15 @@ class Lowpass_fir_filter(object):
 
 class N_pass_filter(object):
     def __init__(self, n, Filter, **filter_arg):
-        self.__v = ZERO
+        self._last_value = ZERO
         self.__n = n
         self.__f = []
         for _ in range(self.__n):
             self.__f.append(Filter(**filter_arg).apply)
 
     def apply(self, value):
-        if value != self.__v:
-            self.__v = value
+        if self._last_value != value:
             for i in range(self.__n):
-                self.__v = self.__f[i](self.__v)
-        return self.__v
+                value = self.__f[i](value)
+            self._last_value = value
+        return value

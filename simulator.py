@@ -13,14 +13,14 @@ class Simulator(DDS):
 
     @property
     def magnitude(self):
-        return self._active__magnitude / ONE
+        return self._magnitude / ONE
     @magnitude.setter
     def magnitude(self, magnitude):
         self._magnitude = int(magnitude * ONE)
 
     @property
     def frequency(self):
-        return self._active__frequency
+        return self._frequency
     @frequency.setter
     def frequency(self, frequency):
         if frequency > SAMPLE_RATE / 2: print("frequency is too high")
