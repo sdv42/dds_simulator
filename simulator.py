@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-from tools.html_chart_helper import *
+from math                       import pi
+from tools.html_chart_helper    import *
 from dsp.config     import ONE, SAMPLE_RATE, SAMPLE_dT, FIX_FP_REST_SIZE
 from dsp.dds        import DDS
+
 
 class Simulator(DDS):
     def __init__(self, magnitude, frequency):
@@ -10,6 +12,13 @@ class Simulator(DDS):
         self.output = []
         self.magnitude = magnitude
         self.frequency = frequency
+
+    @property
+    def fi(self):
+        return (self._fi / ONE)
+    @fi.setter
+    def fi(self, fi):
+        self._fi = int(2*pi * fi * ONE)
 
     @property
     def magnitude(self):
@@ -30,9 +39,9 @@ class Simulator(DDS):
         end_timestamp = self.current_time + interval
         while self.current_time < end_timestamp:
             self.current_time += 1 / SAMPLE_RATE
-            sample = self.get_next_sample(SAMPLE_dT)
+            normalized_out = self.get_next_sample(SAMPLE_dT) / (ONE >> FIX_FP_REST_SIZE)
 
-            item = (int(self.current_time * 1000000),  sample / (ONE >> FIX_FP_REST_SIZE))
+            item = (int(self.current_time * 1000000), normalized_out)
             self.output.append(item)
 
 if __name__ == "__main__":
@@ -44,7 +53,7 @@ if __name__ == "__main__":
     s1.run(0.003)
 
     put_html_to_file('dds_output', 
-        make_html_chart(s1.output, 'time_us', 'value'))
+        make_html_chart(s1.output, 'time_us', 'normalized_out'))
 
 
     s2 = Simulator(1 / 2**14, 110)
@@ -55,4 +64,4 @@ if __name__ == "__main__":
     s2.run(0.003)
 
     put_html_to_file('dds_output_low_magnitude', 
-        make_html_chart(s2.output, 'time_us', 'value'))
+        make_html_chart(s2.output, 'time_us', 'normalized_out'))
